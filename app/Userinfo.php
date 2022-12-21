@@ -4,7 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Userinfo extends Model
+class UserInfo extends Model
 {
-    //
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
