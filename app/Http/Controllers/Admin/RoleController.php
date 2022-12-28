@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Userinfo;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UserinfoController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class UserinfoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Userinfo  $userinfo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Userinfo $userinfo)
+    public function show($id)
     {
         //
     }
@@ -52,10 +52,10 @@ class UserinfoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Userinfo  $userinfo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Userinfo $userinfo)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +64,10 @@ class UserinfoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Userinfo  $userinfo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Userinfo $userinfo)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +75,10 @@ class UserinfoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Userinfo  $userinfo
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Userinfo $userinfo)
+    public function destroy($id)
     {
         //
     }
