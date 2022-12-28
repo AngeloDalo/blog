@@ -53,6 +53,7 @@
 
                             </div>
                         @else
+                        <!--MENU DOPO LOGGATO-->
                             <a class="navbar-brand" href="{{ url('/') }}">
                                 <img style="width: 60px" src="{{ URL('img/logoBoolBnb.png') }}" alt="">
                             </a>
