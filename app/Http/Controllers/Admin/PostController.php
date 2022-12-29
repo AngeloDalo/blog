@@ -4,6 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Post;
+use App\Role;
+use App\Tag;
+use App\Category;
+use App\UserInfo;
+use Prophecy\Call\Call;
+use App\Message;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -14,7 +22,15 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::where('user_id', Auth::user()->id)->get();
+        return view('admin.posts.index', ['posts' => $posts]);
+        // if (Auth::user()->roles()->get()->contains('1')) {
+        //     // order posts and paginate
+        //     $posts = Post::orderBy('created_at', 'desc')->paginate(20);
+        // } else {
+        //     $posts = Post::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(20);
+        // }
+        // return view('admin.posts.index', ['posts' => $posts]);
     }
 
     /**
