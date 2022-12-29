@@ -35,40 +35,39 @@
                     <ul class="mb-2 navbar-nav ml-auto w-100 justify-content-between align-items-center ">
                         <!-- Authentication Links -->
                         @guest
-                            <a class="navbar-brand" href="{{ url('/') }}">
-                                <img style="width: 60px" src="{{ URL('img/logoBoolBnb.png') }}" alt="">
+                            <a class="btn btn-outline-primary" href="{{ url('/') }}">
+                                <span>HOME</span>
                             </a>
                             <div class="d-flex">
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}" style="color: #dc3545"><i
+                                    <a class="btn btn-outline-primary" href="{{ route('login') }}" style="color: #000000"><i
                                             class="bi bi-box-arrow-in-right"></i>
                                         {{ __('Login') }}</a>
                                 </li>
                                 @if (Route::has('register'))
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{ route('register') }}" style="color: #dc3545"><i
+                                        <a class="btn btn-outline-primary" href="{{ route('register') }}" style="color: #000000"><i
                                                 class="bi bi-pencil-square"></i> {{ __('Register') }}</a>
                                     </li>
                                 @endif
-
                             </div>
                         @else
                         <!--MENU DOPO LOGGATO-->
-                            <a class="navbar-brand" href="{{ url('/') }}">
-                                <img style="width: 60px" src="{{ URL('img/logoBoolBnb.png') }}" alt="">
+                            <a class="btn btn-outline-primary" href="{{ url('/') }}">
+                                <span>HOME</span>
                             </a>
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle btn btn-danger text-white"
+                            <li class="">
+                                <a id="navbarDropdown" class="btn btn-outline-primary"
                                     href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false" v-pre>
-                                    {{ Auth::user()->username }}
+                                    {{ Auth::user()->email }}
                                 </a>
 
                                 <div class="" aria-labelledby="navbarDropdown">
-                                    <a class="" href="{{ route('admin.posts.index') }}">
+                                    <a class="btn btn-outline-primary" href="{{ route('admin.posts.index') }}">
                                         Dashboard
                                     </a>
-                                    <a class="" href="{{ route('logout') }}"
+                                    <a class="btn btn-outline-primary" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                                                                            document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
