@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
-use App\Role;
 use App\Tag;
 use App\Category;
 use App\UserInfo;

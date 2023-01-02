@@ -39,6 +39,19 @@
                             </div>
                         </div>
 
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="role" id="role1" value="editor">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                              Editor
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="role" id="role2" value="admin" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                              Admin
+                            </label>
+                        </div>
+
                         <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
