@@ -42,13 +42,13 @@
                                         {{-- @endif --}}
                                     </td>
                                     <td>
-                                        {{-- @if (Auth::user()->id === $post->user_id) --}}
+                                        @if (Auth::user()->role === 'admin')
                                         <form action="{{ route('admin.posts.destroy', $post) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <input class="btn btn-danger" type="submit" value="Delete">
                                         </form>
-                                        {{-- @endif --}}
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

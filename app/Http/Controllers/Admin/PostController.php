@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Post;
+use App\User;
 use App\Tag;
 use App\Category;
 use App\UserInfo;
 use Prophecy\Call\Call;
-use App\Message;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -21,15 +22,9 @@ class PostController extends Controller
      */
     public function index()
     {
+        $role = Auth::user()->role;
         $posts = Post::where('user_id', Auth::user()->id)->get();
-        return view('admin.posts.index', ['posts' => $posts]);
-        // if (Auth::user()->roles()->get()->contains('1')) {
-        //     // order posts and paginate
-        //     $posts = Post::orderBy('created_at', 'desc')->paginate(20);
-        // } else {
-        //     $posts = Post::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(20);
-        // }
-        // return view('admin.posts.index', ['posts' => $posts]);
+        return view('admin.posts.index', ['posts' => $posts, 'role' => $role]);
     }
 
     /**
@@ -39,7 +34,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $tags = Tag::all();
+        $categories = Category::all();
+        return view('admin.posts.create', ['tags' => $tags, 'categories' => $categories]);
     }
 
     /**
@@ -50,7 +47,33 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['user_id'] = Auth::user()->id;
+        $validateData = $request->validate([
+            'title' => 'required|max:255',
+            'eyelet' => 'required',
+            'content' => 'required',
+            'image' => 'nullable|image',
+            'tags.*' => 'nullable|exists:App\Tag,id',
+            'categories.*' => 'nullable|exists:App\Category,id',
+        ]);
+        if (!empty($data['image'])) {
+            $img_path = Storage::put('uploads', $data['image']);
+            $data['image'] = $img_path;
+        } else {
+            $data['image'] = 'uploads/default.jpg';
+        }
+        $post = new Post();
+        $post->fill($data);
+        $post->slug = $post->createSlug($data['title']);
+        $post->save();
+        if (!empty($data['tags'])) {
+            $post->tags()->attach($data['tags']);
+        }
+        if (!empty($data['categories'])) {
+            $post->categories()->attach($data['categories']);
+        }
+        return redirect()->route('admin.posts.show', $post->slug);
     }
 
     /**
@@ -59,9 +82,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        if (Auth::user()->id != $post->user_id) {
+            return redirect()->route('admin.posts.index');
+        }
+        return view('admin.posts.show', ['post' => $post]);
     }
 
     /**
@@ -70,9 +96,14 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        if (Auth::user()->id != $post->user_id) {
+            return redirect()->route('admin.posts.index');
+        }
+        $tags = Tag::all();
+        $categories = Category::all();
+        return view('admin.posts.edit', ['post' => $post, 'tags' => $tags, 'categories' => $categories]);
     }
 
     /**
@@ -82,9 +113,49 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->all();
+        if (Auth::user()->id != $post->user_id) {
+            return redirect()->route('admin.posts.index');
+        }
+        $validateData = $request->validate([
+            'title' => 'required|max:255',
+            'eyelet' => 'required',
+            'content' => 'required',
+            'image' => 'nullable|image',
+            'tags.*' => 'nullable|exists:App\Tag,id',
+            'categories.*' => 'nullable|exists:App\Category,id',
+        ]);
+        if ($data['title'] != $post->title) {
+            $post->title = $data['title'];
+            $post->slug = $post->createSlug($data['title']);
+        }
+
+        if ($data['eyelet'] != $post->eyelet) {
+            $post->eyelet = $data['eyelet'];
+        }
+        if ($data['content'] != $post->content) {
+            $post->content = $data['content'];
+        }
+        if (!empty($data['image'])) {
+            Storage::delete($post->image);
+
+            $img_path = Storage::put('uploads', $data['image']);
+            $post->image = $img_path;
+        }
+        $post->update();
+        if (!empty($data['tags'])) {
+            $post->tags()->sync($data['tags']);
+        } else {
+            $post->tags()->detach();
+        }
+        if (!empty($data['categories'])) {
+            $post->categories()->sync($data['categories']);
+        } else {
+            $post->categories()->detach();
+        }
+        return redirect()->route('admin.posts.show', $post->slug);
     }
 
     /**
@@ -93,8 +164,17 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        //non posso cancellare file che non sono miei
+        if (Auth::user()->id !== $post->user_id) {
+            abort('403');
+        }
+
+        $post->tags()->detach();
+        $post->categories()->detach();
+        $post->delete();
+        //il with serve per il messaggio
+        return redirect()->route('admin.posts.index')->with('status', "Post id $post->id deleted");
     }
 }
