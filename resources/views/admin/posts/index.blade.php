@@ -46,8 +46,11 @@
                                         <form action="{{ route('admin.posts.destroy', $post) }}" method="post">
                                             @csrf
                                             @method('DELETE')
-                                            <input class="btn btn-danger" type="submit" value="Delete">
+                                            <input class="btn btn-danger text-white" type="submit" value="Delete">
                                         </form>
+                                        @endif
+                                        @if (Auth::user()->role === 'editor')
+                                            <input class="btn btn-danger text-white" type="submit" value="NO ADMIN">
                                         @endif
                                     </td>
                                 </tr>

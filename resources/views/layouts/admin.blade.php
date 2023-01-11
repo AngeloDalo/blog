@@ -25,6 +25,9 @@
                 <span>Blog</span>
             </a>
             <div class="d-flex">
+                <a class="btn btn-danger text-white" href="{{ route('admin.posts.create') }}">
+                    Add Post
+                </a>
                 <a id="navbarDropdown" class="btn btn-outline-primary"
                     href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false" v-pre>

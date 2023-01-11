@@ -55,7 +55,6 @@ class PostController extends Controller
             'content' => 'required',
             'image' => 'nullable|image',
             'tags.*' => 'nullable|exists:App\Tag,id',
-            'categories.*' => 'nullable|exists:App\Category,id',
         ]);
         if (!empty($data['image'])) {
             $img_path = Storage::put('uploads', $data['image']);
@@ -65,13 +64,11 @@ class PostController extends Controller
         }
         $post = new Post();
         $post->fill($data);
+        $post->category_id = $data["categories"][0];
         $post->slug = $post->createSlug($data['title']);
         $post->save();
         if (!empty($data['tags'])) {
             $post->tags()->attach($data['tags']);
-        }
-        if (!empty($data['categories'])) {
-            $post->categories()->attach($data['categories']);
         }
         return redirect()->route('admin.posts.show', $post->slug);
     }
@@ -125,7 +122,6 @@ class PostController extends Controller
             'content' => 'required',
             'image' => 'nullable|image',
             'tags.*' => 'nullable|exists:App\Tag,id',
-            'categories.*' => 'nullable|exists:App\Category,id',
         ]);
         if ($data['title'] != $post->title) {
             $post->title = $data['title'];
@@ -138,6 +134,9 @@ class PostController extends Controller
         if ($data['content'] != $post->content) {
             $post->content = $data['content'];
         }
+        if ($data['categories'][0] != $post->category_id) {
+            $post->category_id = $data['categories'][0];
+        }
         if (!empty($data['image'])) {
             Storage::delete($post->image);
 
@@ -149,11 +148,6 @@ class PostController extends Controller
             $post->tags()->sync($data['tags']);
         } else {
             $post->tags()->detach();
-        }
-        if (!empty($data['categories'])) {
-            $post->categories()->sync($data['categories']);
-        } else {
-            $post->categories()->detach();
         }
         return redirect()->route('admin.posts.show', $post->slug);
     }
@@ -172,7 +166,6 @@ class PostController extends Controller
         }
 
         $post->tags()->detach();
-        $post->categories()->detach();
         $post->delete();
         //il with serve per il messaggio
         return redirect()->route('admin.posts.index')->with('status', "Post id $post->id deleted");
