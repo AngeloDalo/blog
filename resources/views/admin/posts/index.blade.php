@@ -38,7 +38,7 @@
                                     <td>
                                         {{-- @if (Auth::user()->id === $post->user_id) --}}
                                         <a class="btn btn-danger text-white"
-                                            href="{{ route('admin.posts.edit', $post->id) }}">-</a>
+                                            href="{{ route('admin.posts.edit', $post->slug) }}">-</a>
                                         {{-- @endif --}}
                                     </td>
                                     <td>
