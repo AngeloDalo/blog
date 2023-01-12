@@ -12,6 +12,8 @@ use App\Category;
 use App\UserInfo;
 use Prophecy\Call\Call;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 
 class PostController extends Controller
 {
@@ -84,7 +86,8 @@ class PostController extends Controller
         if (Auth::user()->id != $post->user_id) {
             return redirect()->route('admin.posts.index');
         }
-        return view('admin.posts.show', ['post' => $post]);
+        $category = Category::where('id', $post->category_id)->get();
+        return view('admin.posts.show', ['post' => $post, 'category' => $category]);
     }
 
     /**

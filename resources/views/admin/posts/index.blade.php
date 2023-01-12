@@ -34,7 +34,7 @@
                                     <td>{{ $post->id }}</td>
                                     <td>{{ $post->title }}</td>
                                     <td><a class="btn btn-danger text-white"
-                                            href="{{ route('admin.posts.show', $post->id) }}">V</a></td>
+                                            href="{{ route('admin.posts.show', $post->slug) }}">V</a></td>
                                     <td>
                                         {{-- @if (Auth::user()->id === $post->user_id) --}}
                                         <a class="btn btn-danger text-white"
