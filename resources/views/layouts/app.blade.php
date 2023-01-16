@@ -8,19 +8,19 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Blog') }}</title>
-    {{-- <link rel="icon" type="image/x-icon" href="/public/favicon.ico"> --}}
+    <title>{{ config('app.name', 'Posts') }}</title>
+    <link rel="icon" type="image/x-icon" href="/public/favicon.ico">
 
 
     <!-- Fonts -->
-    {{-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- Scripts -->
     @yield('script')
-</head>
+  </head>
 
 <body>
     <div>
