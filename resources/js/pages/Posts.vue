@@ -1,6 +1,5 @@
 <template>
     <div class="contain">
-        jj
         <div
             class="shadow row mb-5 border border-danger rounded-3 p-3 bg-light"
             v-for="post in posts"
@@ -60,7 +59,9 @@ export default {
         getPosts(url) {
                 Axios.get(url).then(
                     (result) => {
-                        this.posts = result.data.results.data;
+                        console.log(result);
+                        this.posts = result.data.results;
+                        console.log(this.posts);
                     });
             },
     },

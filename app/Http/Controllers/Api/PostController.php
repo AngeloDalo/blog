@@ -23,12 +23,12 @@ class PostController extends Controller
 
     public function show($id)
     {
-        $posts = Post::with('services')->find($id);
+        $post = Post::find($id);
         return response()->json([
             'response' => true,
-            'count' => $posts ? 1 : 0,
+            'count' => $post ? 1 : 0,
             'results' =>  [
-                'posts' => $posts
+                'posts' => $post
             ],
         ]);
     }
